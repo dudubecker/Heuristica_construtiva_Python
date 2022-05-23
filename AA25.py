@@ -46,9 +46,11 @@ while qtd_atendidos < n:
             # considerando que um nó de pickup pode ser no mínimo inserido na primeira (0) posição e no máximo na penúltima
             for pos_insercao_no_pickup in range(0, len(rota)):
 
+
+                print('Hello world!')
                 # Variação da função objetivo pela inserção dos nós x_request e y_request nas posições da iteração
-                delta = (t[rota[pos_insercao_no_pickup]][no_pickup] + t[no_pickup][rota[pos_insercao_no_pickup+1]] - t[rota[pos_insercao_no_pickup]][rota[pos_insercao_no_pickup]+1]) + (t[rota[pos_insercao_no_delivery]][no_delivery] + t[no_delivery][rota[pos_insercao_no_delivery+1]] - t[rota[pos_insercao_no_delivery]][rota[pos_insercao_no_delivery]+1])
-                print(delta)
+                #delta = (t[rota[pos_insercao_no_pickup]][no_pickup] + t[no_pickup][rota[pos_insercao_no_pickup+1]] - t[rota[pos_insercao_no_pickup]][rota[pos_insercao_no_pickup]+1]) + (t[rota[pos_insercao_no_delivery]][no_delivery] + t[no_delivery][rota[pos_insercao_no_delivery+1]] - t[rota[pos_insercao_no_delivery]][rota[pos_insercao_no_delivery]+1])
+                #print(delta)
 
 
 
