@@ -69,9 +69,6 @@ while qtd_atendidos < n:
                     rota_teste.insert(pos_insercao_no_pickup, no_pickup)
                     rota_teste.insert(pos_insercao_no_delivery, no_delivery)
 
-                    # Variação da função objetivo pela inserção dos nós x_request e y_request nas posições da iteração
-                    #delta = (t[rota[pos_insercao_no_pickup]][no_pickup] + t[no_pickup][rota[pos_insercao_no_pickup+1]] - t[rota[pos_insercao_no_pickup]][rota[pos_insercao_no_pickup]+1]) + (t[rota[pos_insercao_no_delivery]][no_delivery] + t[no_delivery][rota[pos_insercao_no_delivery+1]] - t[rota[pos_insercao_no_delivery]][rota[pos_insercao_no_delivery]+1])
-
                     # Variação da função objetivo pela inserção dos nós nas posições da iteração
 
                     delta_pickup = (t[rota_teste[pos_insercao_no_pickup - 1]][rota_teste[pos_insercao_no_pickup]] + t[rota_teste[pos_insercao_no_pickup]][rota_teste[pos_insercao_no_pickup + 1]] - t[rota_teste[pos_insercao_no_pickup - 1]][rota_teste[pos_insercao_no_pickup + 1]])
@@ -97,7 +94,6 @@ while qtd_atendidos < n:
     S[indice_rota_delta_minimo] = rota_delta_minimo
 
     # Atualizando quantidade de pedidos atendidos
-
     qtd_atendidos += 1
 
     # Removendo pedido de L
