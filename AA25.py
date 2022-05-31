@@ -36,8 +36,20 @@ while qtd_atendidos < n:
     # Índice do nó de delivery correspondente ao request
     no_delivery = request + n
 
+    # Variável que guardará o delta mínimo de incremento da função objetivo para cada rota
+    deltas_minimos = []
+
+    # Variável que guardará a rota correspondente ao delta mínimo para cada rota da solução
+    rotas_delta_minimo = []
+
     # Para cada rota da solução (rotas criadas paralelamente)
     for rota in S:
+
+        # Variável para controlar o delta mínimo para cada rota (variações no valor da função objetivo dados pela inserção de um novo request na rota)
+        delta_minimo = 10e5
+
+        # Variável que guardará a rota com delta mínimo gerada na iteração pelas inserções
+        rota_delta_minimo = list()
 
         for pos_insercao_no_pickup in range(1, len(rota) + 1):
 
@@ -55,14 +67,29 @@ while qtd_atendidos < n:
                     rota_teste.insert(pos_insercao_no_pickup, no_pickup)
                     rota_teste.insert(pos_insercao_no_delivery, no_delivery)
 
-                    print(rota_teste)
-
                     # Variação da função objetivo pela inserção dos nós x_request e y_request nas posições da iteração
                     #delta = (t[rota[pos_insercao_no_pickup]][no_pickup] + t[no_pickup][rota[pos_insercao_no_pickup+1]] - t[rota[pos_insercao_no_pickup]][rota[pos_insercao_no_pickup]+1]) + (t[rota[pos_insercao_no_delivery]][no_delivery] + t[no_delivery][rota[pos_insercao_no_delivery+1]] - t[rota[pos_insercao_no_delivery]][rota[pos_insercao_no_delivery]+1])
 
+                    # Variação da função objetivo pela inserção dos nós nas posições da iteração
 
+                    delta_pickup = (t[rota_teste[pos_insercao_no_pickup - 1]][rota_teste[pos_insercao_no_pickup]] + t[rota_teste[pos_insercao_no_pickup]][rota_teste[pos_insercao_no_pickup + 1]] - t[rota_teste[pos_insercao_no_pickup - 1]][rota_teste[pos_insercao_no_pickup + 1]])
+                    delta_delivery = (t[rota_teste[pos_insercao_no_delivery - 1]][rota_teste[pos_insercao_no_delivery]] + t[rota_teste[pos_insercao_no_delivery]][rota_teste[pos_insercao_no_delivery + 1]] - t[rota_teste[pos_insercao_no_delivery - 1]][rota_teste[pos_insercao_no_delivery + 1]])
 
+                    delta = delta_pickup + delta_delivery
 
+                    # Se o delta for menor que o delta mínimo já registrado, atualizam-se os valores de delta mínimo e a rota correspondente
+                    if delta < delta_minimo:
+                        delta_minimo = delta
+                        rota_delta_minimo = rota_teste.copy()
+
+        # Guardando valores de delta mínimo e rota correspondente
+
+        deltas_minimos.append(delta_minimo)
+        rotas_delta_minimo.append(rota_delta_minimo)
+
+        # O que ainda falta no código:
+        # Checagem de factibilidade para cada rota teste (função?)
+        # Criação de uma nova rota caso não haja posições de inserção factíveis
 
 
 
