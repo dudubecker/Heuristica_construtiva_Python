@@ -2,8 +2,7 @@
 from leitor_instancias import Leitor
 
 # Lendo arquivo com as instâncias
-x, y, d, q, e, l, t, n, Cap = Leitor('AA25').dados_instancia
-
+x, y, d, q, e, l, t, n, Cap = Leitor('AA3_toy').dados_instancia
 
 # Criando variáveis com valores atualizados a cada inserção
 
@@ -13,7 +12,7 @@ L = list(range(1,n+1))
 # Solução com as rotas -> Inicia-se com uma única rota vazia com os nós do depósito central, para poder iterar desde a primeira iteração
 S = [ [0, 2*n + 1] ]
 
-# Capacidade do veículo na roda
+# Capacidade do veículo na rota
 Cap_atual = 0
 
 # Tempo atual da rota
@@ -40,17 +39,26 @@ while qtd_atendidos < n:
     # Para cada rota da solução (rotas criadas paralelamente)
     for rota in S:
 
-        # considerando que um nó de delivery pode ser no mínimo inserido na segunda (1) posição e no máximo na última
-        for pos_insercao_no_delivery in range(1, len(rota) + 1):
+        for pos_insercao_no_pickup in range(1, len(rota) + 1):
 
-            # considerando que um nó de pickup pode ser no mínimo inserido na primeira (0) posição e no máximo na penúltima
-            for pos_insercao_no_pickup in range(0, len(rota)):
+            for pos_insercao_no_delivery in range(1, len(rota) + 1):
 
+                # Testando apenas índices de inserção válidos: índice de delivery maior do que o de pickup (precedence) e diferente dele!
+                # A iteração começa em 1 e termina no tamanho da rota porque não se considera a primeira e última posição da rota, que são o depósito
+                if (pos_insercao_no_pickup != pos_insercao_no_delivery) and (pos_insercao_no_pickup < pos_insercao_no_delivery):
+                    #print(pos_insercao_no_pickup, pos_insercao_no_delivery)
 
-                print('Hello world!')
-                # Variação da função objetivo pela inserção dos nós x_request e y_request nas posições da iteração
-                #delta = (t[rota[pos_insercao_no_pickup]][no_pickup] + t[no_pickup][rota[pos_insercao_no_pickup+1]] - t[rota[pos_insercao_no_pickup]][rota[pos_insercao_no_pickup]+1]) + (t[rota[pos_insercao_no_delivery]][no_delivery] + t[no_delivery][rota[pos_insercao_no_delivery+1]] - t[rota[pos_insercao_no_delivery]][rota[pos_insercao_no_delivery]+1])
-                #print(delta)
+                    #Rota testada para a inserção
+                    rota_teste = rota.copy()
+
+                    #Inserindo nós na rota, nas posições da iteração
+                    rota_teste.insert(pos_insercao_no_pickup, no_pickup)
+                    rota_teste.insert(pos_insercao_no_delivery, no_delivery)
+
+                    print(rota_teste)
+
+                    # Variação da função objetivo pela inserção dos nós x_request e y_request nas posições da iteração
+                    #delta = (t[rota[pos_insercao_no_pickup]][no_pickup] + t[no_pickup][rota[pos_insercao_no_pickup+1]] - t[rota[pos_insercao_no_pickup]][rota[pos_insercao_no_pickup]+1]) + (t[rota[pos_insercao_no_delivery]][no_delivery] + t[no_delivery][rota[pos_insercao_no_delivery+1]] - t[rota[pos_insercao_no_delivery]][rota[pos_insercao_no_delivery]+1])
 
 
 
