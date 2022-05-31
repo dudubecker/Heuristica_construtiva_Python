@@ -51,10 +51,10 @@ class Leitor:
         Cap = first_line[3]
 
         # Tempo de viagem (igual/proporcional à distância entre cada nó): inicia-se como 0
-        t = [[0 for i in range(0,n+1)] for j in range(0,n+1)]
+        t = [[0 for i in range(0,2*n+2)] for j in range(0,2*n+2)]
 
-        for i in range(0, n+1):
-            for j in range(0, n+1):
+        for i in range(0, 2*n+2):
+            for j in range(0, 2*n+2):
 
                 # Calculando distância euclidiana, arrendondando para 2 casas
                 dist = round(((x[i]-x[j])**2 + (y[i]-y[j])**2)**(1/2),2)

@@ -1,6 +1,8 @@
 # Importando leitor de instâncias
 from leitor_instancias import Leitor
 
+import numpy as np
+
 # Lendo arquivo com as instâncias
 x, y, d, q, e, l, t, n, Cap = Leitor('AA3_toy').dados_instancia
 
@@ -83,13 +85,30 @@ while qtd_atendidos < n:
                         rota_delta_minimo = rota_teste.copy()
 
         # Guardando valores de delta mínimo e rota correspondente
-
         deltas_minimos.append(delta_minimo)
         rotas_delta_minimo.append(rota_delta_minimo)
+
+    # Checando qual rota da iteração teve o menor incremento na função objetivo
+
+    indice_rota_delta_minimo = np.argmin(deltas_minimos)
+    rota_delta_minimo = rotas_delta_minimo[indice_rota_delta_minimo]
+
+    # Atribuindo rota para a solução
+    S[indice_rota_delta_minimo] = rota_delta_minimo
+
+    # Atualizando quantidade de pedidos atendidos
+
+    qtd_atendidos += 1
+
+    # Removendo pedido de L
+    L.pop(0)
+
+    print(S)
 
         # O que ainda falta no código:
         # Checagem de factibilidade para cada rota teste (função?)
         # Criação de uma nova rota caso não haja posições de inserção factíveis
+
 
 
 
