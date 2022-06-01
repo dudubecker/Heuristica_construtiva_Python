@@ -15,10 +15,10 @@ L = list(range(1,n+1))
 S = [ [0, 2*n + 1] ]
 
 # Capacidade do veículo na rota
-Cap_atual = 0
+# Cap_atual = 0
 
 # Tempo atual da rota
-Tempo_atual = 0
+# Tempo_atual = 0
 
 # Quantidade de requests atendidos
 qtd_atendidos = 0
@@ -69,17 +69,55 @@ while qtd_atendidos < n:
                     rota_teste.insert(pos_insercao_no_pickup, no_pickup)
                     rota_teste.insert(pos_insercao_no_delivery, no_delivery)
 
-                    # Variação da função objetivo pela inserção dos nós nas posições da iteração
+                    # Checando factibilidade da rota
+                    # *OBS: não é necessário testar pairing e precedence, porque os pedidos são inseridos em pares nas rotas e a inserção já assegura precedência
 
-                    delta_pickup = (t[rota_teste[pos_insercao_no_pickup - 1]][rota_teste[pos_insercao_no_pickup]] + t[rota_teste[pos_insercao_no_pickup]][rota_teste[pos_insercao_no_pickup + 1]] - t[rota_teste[pos_insercao_no_pickup - 1]][rota_teste[pos_insercao_no_pickup + 1]])
-                    delta_delivery = (t[rota_teste[pos_insercao_no_delivery - 1]][rota_teste[pos_insercao_no_delivery]] + t[rota_teste[pos_insercao_no_delivery]][rota_teste[pos_insercao_no_delivery + 1]] - t[rota_teste[pos_insercao_no_delivery - 1]][rota_teste[pos_insercao_no_delivery + 1]])
+                    # Variável booleana, que controla a factibilidade
+                    factivel = True
 
-                    delta = delta_pickup + delta_delivery
+                    # Capacidade atual do veículo na rota (inicia como 0)
+                    cap_atual = 0
 
-                    # Se o delta for menor que o delta mínimo já registrado, atualizam-se os valores de delta mínimo e a rota correspondente
-                    if delta < delta_minimo:
-                        delta_minimo = delta
-                        rota_delta_minimo = rota_teste.copy()
+                    # Tempo atual da rota (inicia como 0)
+                    t_atual = 0
+
+                    # Para cada nó da rota teste
+                    for index in range(1, len(rota_teste)):
+
+                        no_atual = rota[index - 1]
+                        no_seguinte = rota[index]
+
+                        # Checando se ir para o nó seguinte irá violar as restrições de capacidade e time window
+                        if (cap_atual + q[no_seguinte] > Cap) or (l[no_seguinte] < t_atual + t[no_atual][no_seguinte]):
+
+                            # Atribuindo valor falso para a variável de factibilidade e quebrando o laço for
+                            factivel = False
+                            break
+
+                        else:
+
+                            # Atualizando valores
+                            cap_atual += q[no_seguinte]
+                            t_atual += t[no_atual][no_seguinte]
+
+                    # Caso a solução seja factível, calcula-se a variação do delta
+                    if factivel:
+                        # Variação da função objetivo pela inserção dos nós nas posições da iteração
+
+                        delta_pickup = (t[rota_teste[pos_insercao_no_pickup - 1]][rota_teste[pos_insercao_no_pickup]] + t[rota_teste[pos_insercao_no_pickup]][rota_teste[pos_insercao_no_pickup + 1]] - t[rota_teste[pos_insercao_no_pickup - 1]][rota_teste[pos_insercao_no_pickup + 1]])
+                        delta_delivery = (t[rota_teste[pos_insercao_no_delivery - 1]][rota_teste[pos_insercao_no_delivery]] + t[rota_teste[pos_insercao_no_delivery]][rota_teste[pos_insercao_no_delivery + 1]] - t[rota_teste[pos_insercao_no_delivery - 1]][rota_teste[pos_insercao_no_delivery + 1]])
+
+                        delta = delta_pickup + delta_delivery
+
+                        # Se o delta for menor que o delta mínimo já registrado, atualizam-se os valores de delta mínimo e a rota correspondente
+                        if delta < delta_minimo:
+                            delta_minimo = delta
+                            rota_delta_minimo = rota_teste.copy()
+
+                    # Caso contrário, passa-se para a próxima posição de inserção da iteração (GUARDAR ESSA INFORMAÇÃO!)
+                    else:
+
+                        pass
 
         # Guardando valores de delta mínimo e rota correspondente
         deltas_minimos.append(delta_minimo)
