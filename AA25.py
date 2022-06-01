@@ -14,12 +14,6 @@ L = list(range(1,n+1))
 # Solução com as rotas -> Inicia-se com uma única rota vazia com os nós do depósito central, para poder iterar desde a primeira iteração
 S = [ [0, 2*n + 1] ]
 
-# Capacidade do veículo na rota
-# Cap_atual = 0
-
-# Tempo atual da rota
-# Tempo_atual = 0
-
 # Quantidade de requests atendidos
 qtd_atendidos = 0
 
@@ -60,7 +54,6 @@ while qtd_atendidos < n:
                 # Testando apenas índices de inserção válidos: índice de delivery maior do que o de pickup (precedence) e diferente dele!
                 # A iteração começa em 1 e termina no tamanho da rota porque não se considera a primeira e última posição da rota, que são o depósito
                 if (pos_insercao_no_pickup != pos_insercao_no_delivery) and (pos_insercao_no_pickup < pos_insercao_no_delivery):
-                    #print(pos_insercao_no_pickup, pos_insercao_no_delivery)
 
                     #Rota testada para a inserção
                     rota_teste = rota.copy()
