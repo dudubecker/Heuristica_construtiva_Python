@@ -23,7 +23,7 @@ FO = 0
 # Enquanto todos os pedidos não tiverem sido atendidos
 while qtd_atendidos < n:
 
-    # O número do pedido a ser inserido nas rotas é simplesmente o primeiro daqueles que ainda não foram atendidos
+    # O número do pedido a ser inserido nas rotas é simplesmente o primeiro daqueles que ainda não foram atendidos -> há alguma forma melhor de ordenar?
     request = L[0]
 
     # Índice do nó de pickup correspondente ao request
@@ -32,11 +32,14 @@ while qtd_atendidos < n:
     # Índice do nó de delivery correspondente ao request
     no_delivery = request + n
 
-    # Variável que guardará o delta mínimo de incremento da função objetivo para cada rota
+    # Variável que guardará o delta mínimo de incremento da função objetivo para cada rota com nova inserção
     deltas_minimos = []
 
     # Variável que guardará a rota correspondente ao delta mínimo para cada rota da solução
     rotas_delta_minimo = []
+
+    # Variável que controlará o número de rotas factíveis encontradas
+    num_rotas_factiveis = 0
 
     # Para cada rota da solução (rotas criadas paralelamente)
     for rota in S:
@@ -77,8 +80,8 @@ while qtd_atendidos < n:
                     # Para cada nó da rota teste
                     for index in range(1, len(rota_teste)):
 
-                        no_atual = rota[index - 1]
-                        no_seguinte = rota[index]
+                        no_atual = rota_teste[index - 1]
+                        no_seguinte = rota_teste[index]
 
                         # Checando se ir para o nó seguinte irá violar as restrições de capacidade e time window
                         if (cap_atual + q[no_seguinte] > Cap) or (l[no_seguinte] < t_atual + t[no_atual][no_seguinte]):
@@ -91,10 +94,15 @@ while qtd_atendidos < n:
 
                             # Atualizando valores
                             cap_atual += q[no_seguinte]
+                            # Alteração necessária: caso o tempo de chegada seja menor que a janela de tempo de abertura!
                             t_atual += t[no_atual][no_seguinte]
 
                     # Caso a solução seja factível, calcula-se a variação do delta
                     if factivel:
+
+                        # Incrementando variável de número de rotas factíveis
+                        num_rotas_factiveis += 1
+
                         # Variação da função objetivo pela inserção dos nós nas posições da iteração
 
                         delta_pickup = (t[rota_teste[pos_insercao_no_pickup - 1]][rota_teste[pos_insercao_no_pickup]] + t[rota_teste[pos_insercao_no_pickup]][rota_teste[pos_insercao_no_pickup + 1]] - t[rota_teste[pos_insercao_no_pickup - 1]][rota_teste[pos_insercao_no_pickup + 1]])
@@ -107,7 +115,7 @@ while qtd_atendidos < n:
                             delta_minimo = delta
                             rota_delta_minimo = rota_teste.copy()
 
-                    # Caso contrário, passa-se para a próxima posição de inserção da iteração (GUARDAR ESSA INFORMAÇÃO!)
+                    # Caso contrário, passa-se para a próxima posição de inserção da iteração
                     else:
 
                         pass
@@ -121,8 +129,17 @@ while qtd_atendidos < n:
     indice_rota_delta_minimo = np.argmin(deltas_minimos)
     rota_delta_minimo = rotas_delta_minimo[indice_rota_delta_minimo]
 
-    # Atribuindo rota para a solução
-    S[indice_rota_delta_minimo] = rota_delta_minimo
+    # Caso tenha sido encontrada ao menos uma posição de inserção factível
+    if num_rotas_factiveis > 0:
+
+        # Atribuindo rota para a solução
+        S[indice_rota_delta_minimo] = rota_delta_minimo
+
+    # Caso contrário, isso significará que não foram encontradas posições de inserção factíveis para as rotas em questão
+    # fazendo-se necessária uma nova rota
+    else:
+
+        S.append([0, no_pickup, no_delivery, 2 * n + 1])
 
     # Atualizando quantidade de pedidos atendidos
     qtd_atendidos += 1
@@ -133,8 +150,8 @@ while qtd_atendidos < n:
     print(S)
 
         # O que ainda falta no código:
-        # Checagem de factibilidade para cada rota teste (função?)
-        # Criação de uma nova rota caso não haja posições de inserção factíveis
+
+        # Corrigir o caso de adiantamento de time window na checagem de factibilidade
 
 
 
