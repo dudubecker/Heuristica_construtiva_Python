@@ -4,7 +4,7 @@ from leitor_instancias import Leitor
 import numpy as np
 
 # Lendo arquivo com as instâncias
-x, y, d, q, e, l, t, n, Cap = Leitor('AA25').dados_instancia
+x, y, d, q, e, l, t, n, Cap = Leitor('AA3_toy').dados_instancia
 
 # Criando variáveis com valores atualizados a cada inserção
 
@@ -41,14 +41,14 @@ while qtd_atendidos < n:
     # Variável que controlará o número de rotas factíveis encontradas
     num_rotas_factiveis = 0
 
-    # Para cada rota da solução (rotas criadas paralelamente)
+    # Para cada rota da solução, serão testadas todas as posições de inserção possíveis (rotas criadas paralelamente)
     for rota in S:
 
         # Variável para controlar o delta mínimo para cada rota (variações no valor da função objetivo dados pela inserção de um novo request na rota)
         delta_minimo = 10e5
 
         # Variável que guardará a rota com delta mínimo gerada na iteração pelas inserções
-        rota_delta_minimo = list()
+        rota_delta_minimo = []
 
         for pos_insercao_no_pickup in range(1, len(rota) + 1):
 
