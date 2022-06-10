@@ -4,7 +4,7 @@ from leitor_instancias import Leitor
 import numpy as np
 
 # Lendo arquivo com as instâncias
-x, y, d, q, e, l, t, n, Cap = Leitor('AA3_toy').dados_instancia
+x, y, d, q, e, l, t, n, Cap = Leitor('AA25').dados_instancia
 
 # Criando variáveis com valores atualizados a cada inserção
 
@@ -156,12 +156,8 @@ while qtd_atendidos < n:
     # Removendo pedido de L
     L.pop(0)
 
-    print(S)
+print(S)
 
-        # O que ainda falta no código:
-
-        # Criação de uma nova rota caso não haja posições de inserção factíveis em nenhuma rota
-        # Corrigir o caso de adiantamento de time window na checagem de factibilidade
 
 
 
