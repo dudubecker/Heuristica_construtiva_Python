@@ -91,11 +91,20 @@ while qtd_atendidos < n:
                             break
 
                         else:
-
                             # Atualizando valores
+
+                            # Capacidade
                             cap_atual += q[no_seguinte]
-                            # Alteração necessária: caso o tempo de chegada seja menor que a janela de tempo de abertura!
-                            t_atual += t[no_atual][no_seguinte]
+
+                            # Tempo
+                            # Caso haja adiantamento (tempo de chegada menor que a janela de tempo de abertura)
+                            if (t_atual + t[no_atual][no_seguinte]) < e[no_seguinte]:
+
+                                t_atual = e[no_seguinte]
+
+                            else:
+
+                                t_atual += t[no_atual][no_seguinte]
 
                     # Caso a solução seja factível, calcula-se a variação do delta
                     if factivel:
