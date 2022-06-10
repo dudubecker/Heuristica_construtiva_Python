@@ -151,6 +151,7 @@ while qtd_atendidos < n:
 
         # O que ainda falta no código:
 
+        # Criação de uma nova rota caso não haja posições de inserção factíveis em nenhuma rota
         # Corrigir o caso de adiantamento de time window na checagem de factibilidade
 
 
