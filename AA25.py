@@ -58,10 +58,10 @@ while qtd_atendidos < n:
                 # A iteração começa em 1 e termina no tamanho da rota porque não se considera a primeira e última posição da rota, que são o depósito
                 if (pos_insercao_no_pickup != pos_insercao_no_delivery) and (pos_insercao_no_pickup < pos_insercao_no_delivery):
 
-                    #Rota testada para a inserção
+                    # Rota testada para a inserção
                     rota_teste = rota.copy()
 
-                    #Inserindo nós na rota, nas posições da iteração
+                    # Inserindo nós na rota, nas posições da iteração
                     rota_teste.insert(pos_insercao_no_pickup, no_pickup)
                     rota_teste.insert(pos_insercao_no_delivery, no_delivery)
 
@@ -106,7 +106,7 @@ while qtd_atendidos < n:
 
                                 t_atual += t[no_atual][no_seguinte]
 
-                    # Caso a solução seja factível, calcula-se a variação do delta
+                    # Caso a solução seja factível, calcula-se o delta
                     if factivel:
 
                         # Incrementando variável de número de rotas factíveis
@@ -156,7 +156,10 @@ while qtd_atendidos < n:
     # Removendo pedido de L
     L.pop(0)
 
-print(S)
+# Printando solução
+for rota in S:
+
+    print(rota)
 
 
 
